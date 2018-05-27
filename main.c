@@ -17,9 +17,11 @@ struct Cellule {
 
 typedef struct Cellule *Liste;
 
+int size = 0;
+
 void AugmenterNombreExemplaires(Liste Ps, char *Ref, int Nb) {
 	
-	int i, size = sizeof(Ps) / sizeof(Ps[0]);
+	int i;
 	
 	for (i = 0; i < size; i++) {
 		
@@ -34,15 +36,15 @@ void AugmenterNombreExemplaires(Liste Ps, char *Ref, int Nb) {
 	
 }
 
-void AjoutProduit(Produit P, Liste *Ps) {
+void AjoutProduit(Produit P, Liste Ps) {
 	
-	int i, pos = 0, size = sizeof(Ps) / sizeof(Ps[0]);
+	int i, pos = 0;
 	
 	printf("size : %d\n", size);
 	
 	for (i = 0; i < size; i++) {
 			
-		if (Ps[i]->info.Prix > P.Prix) {
+		if (Ps[i].info.Prix > P.Prix) {
 			
 			pos = i;
 			break;
@@ -54,7 +56,7 @@ void AjoutProduit(Produit P, Liste *Ps) {
 	for (i = size - 1; i > pos; i--)
 		Ps[i] = Ps[i - 1];
 	
-	Ps[0]->info = P;
+	Ps[pos].info = P;
 }
 
 Liste lectureProduit(char *nomfichier) {
@@ -88,7 +90,7 @@ Liste lectureProduit(char *nomfichier) {
 
 Produit CommanderProduit(Liste Ps, char *Ref, int qtecommande) {
 	
-	int i, size = sizeof(Ps) / sizeof(Ps[0]);
+	int i;
 	Produit p;
 	
 	for (i = 0; i < size; i++) {
@@ -98,7 +100,7 @@ Produit CommanderProduit(Liste Ps, char *Ref, int qtecommande) {
 			Ps[i].info.Nbre -= qtecommande;
 			
 			p = Ps[i].info;
-			
+			break;
 		}
 		
 	}
@@ -113,7 +115,7 @@ void CommandeClient(Liste Ps, char nomFichier[30]) {
 	if (f == NULL)
 		return;
 		
-	int i, size = sizeof(Ps) / sizeof(Ps[0]);
+	int i;
 	
 	for (i = 0; i < size; i++) {
 		
@@ -156,7 +158,7 @@ void EtablirFacture(char nomFichier[30]) {
 
 void Afficher(Liste Ps) {
 	
-	int i, size = sizeof(Liste) / sizeof(Ps[0]);
+	int i;
 	Produit p;
 	printf("size : %d\n", size);
 	for (i = 0; i < size; i++) {
@@ -170,7 +172,8 @@ void Afficher(Liste Ps) {
 }
 
 int main(int argc, char *argv[]) {
-	Liste Ps = malloc(sizeof(Liste) * 3);
+	size = 3;
+	Liste Ps = malloc(sizeof(Liste) * size);
 	
 	Produit p1;
 	strcpy(p1.Ref, "R001");
@@ -190,14 +193,16 @@ int main(int argc, char *argv[]) {
 	p3.Prix = 19;
 	p3.Nbre = 7;
 	
-	AjoutProduit(p1, &Ps);
-	AjoutProduit(p2, &Ps);
-	AjoutProduit(p3, &Ps);
+	AjoutProduit(p1, Ps);
+	AjoutProduit(p2, Ps);
+	AjoutProduit(p3, Ps);
 	Afficher(Ps);
 	
-//	CommandeClient(*Ps, "produits2.txt");
-//	
-//	EtablirFacture("produits2.txt");
+	CommandeClient(Ps, "produits2.txt");
+	
+	EtablirFacture("produits2.txt");
+	
+	free(Ps);
 	
 	return 0;
 }

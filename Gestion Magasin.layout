@@ -3,3 +3,11 @@ CursorCol=3
 CursorRow=37
 TopLine=7
 LeftChar=1
+[Editors]
+Order=0
+Focused=0
+[Editor_0]
+CursorCol=32
+CursorRow=39
+TopLine=177
+LeftChar=1
