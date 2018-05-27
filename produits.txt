@@ -1,0 +1,3 @@
+R001	Stylo	2	10
+R002	Gomme	8	20
+R003	Cahier	15	6
